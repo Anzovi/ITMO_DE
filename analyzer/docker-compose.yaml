@@ -1,0 +1,19 @@
+services:
+  analyzer:
+    image: mluvelka-analyzer:latest
+    container_name: analyzer
+    build: .
+    labels:
+      - "traefik.http.routers.analyzer.rule=Host(`mluvelka.ru`) && PathPrefix(`/analyzer`)"
+      - "traefik.http.routers.analyzer.entrypoints=https"
+      - "traefik.http.routers.analyzer.tls.certresolver=letsEncrypt"
+      - "traefik.http.services.analyzer.loadbalancer.server.port=8001"
+    networks:
+      - uvelka-net
+    restart: unless-stopped
+
+networks:
+  uvelka-net:
+    name: uvelka-net
+    driver: bridge
+    external: true
