@@ -1,0 +1,28 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.11-alpine
+    container_name: clickhouse
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    environment:
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
+    labels:
+      - "traefik.http.routers.clickhouse.rule=Host(`mluvelka.ru`)"
+      - "traefik.http.routers.clickhouse.entrypoints=clickhouse"
+      - "traefik.http.services.clickhouse.loadbalancer.server.port=8123"
+    networks:
+      - uvelka-net
+    restart: unless-stopped
+
+volumes:
+  clickhouse_data:
+    name: clickhouse_data
+
+networks:
+  uvelka-net:
+    name: uvelka-net
+    driver: bridge
+    external: true
