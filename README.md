@@ -60,3 +60,4 @@ git clone https://github.com/Anzovi/ITMO_DE.git <directory>
 ```
 Далее установка отдельных модулей содержится в соответствующих одноименных папках. 
 
+Ссылка на дашборд: https://datalens.yandex/2rcp6ry0fx0go
